@@ -46,6 +46,7 @@ gdp_df |>
 gdp_df |> 
   group_by(Year) |> 
   count() |> 
+  #if wanted to rename the n column (the result of count()) do |> rename(year_count = n)
 
   ggplot(aes(x = Year, y = n)) + 
   geom_line() + 
@@ -55,12 +56,49 @@ gdp_df |>
 #expand_limits (y = 0) makes the line chart y value start at zero, and condenses the line chart
 ```
 
+```{r}
+gdp_df |> 
+  group_by(Year) |> 
+  count() |> 
+  #if wanted to rename the n column (the result of count()) do |> rename(year_count = n)
+
+  ggplot(aes(x = Year, y = n)) + 
+  geom_line() + 
+  ggtitle('Number of Observations per Year') +
+  labs(y = 'Observations')
+```
+
+
 
 How many countries are represented in this dataset? Which countries have the fewest observations?
 
+There are 242 rows in the country column (not all are actual countries). The countries with the fewest observations are Djibouti, Somalia, Turks and Caicos Islands, Sint Maarten (Dutch part), and Kosovo.
+
+```{r}
+gdp_df |> 
+  group_by(Country) |> 
+  count() |> 
+  arrange(n)
+```
+
+
+
 Create a new tibble by subsetting gdp_df to just the year 2021. Call this new tibble gdp_2021.
 
+```{r}
+gdp_2021 <- 
+  gdp_df |> 
+  filter(Year == 2021)
+```
+
+
 Use summary() to find the summary statistics for GDP per capita in 2021.
+
+```{r}
+gdp_2021 |> 
+  summary()
+```
+
 
 Create a histogram of GDP Per Capita numbers for 2021 (you may wish to adjust the number of bins for your histogram).
 
