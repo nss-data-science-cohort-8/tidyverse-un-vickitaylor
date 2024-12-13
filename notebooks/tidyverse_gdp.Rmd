@@ -23,7 +23,38 @@ gdp_df |>
 
 Drop the 'Value Footnotes' column, and rename the remaining columns to 'Country', 'Year', and 'GDP_Per_Capita'.
 
+```{r}
+gdp_df <- 
+  select(gdp_df, -'Value Footnotes') |> 
+  rename(Country = 'Country or Area',
+         GDP_Per_Capita = Value)
+```
+
+
 Which years are represented in this dataset? How many observations are there per year? Make a plot to view the number of observations per year.
+
+There are 33 different years from 1990 - 2022.
+
+```{r}
+gdp_df |> 
+  group_by(Year) |> 
+  count()
+```
+
+
+```{r}
+gdp_df |> 
+  group_by(Year) |> 
+  count() |> 
+
+  ggplot(aes(x = Year, y = n)) + 
+  geom_line() + 
+  ggtitle('Number of Observations per Year') +
+  labs(y = 'Observations')
+
+#expand_limits (y = 0) makes the line chart y value start at zero, and condenses the line chart
+```
+
 
 How many countries are represented in this dataset? Which countries have the fewest observations?
 
