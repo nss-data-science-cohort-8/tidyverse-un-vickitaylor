@@ -102,7 +102,27 @@ gdp_2021 |>
 
 Create a histogram of GDP Per Capita numbers for 2021 (you may wish to adjust the number of bins for your histogram).
 
+```{r}
+ggplot(gdp_2021, aes(x = GDP_Per_Capita)) + 
+  geom_histogram(bins = 15) + 
+  ggtitle('GDP Per Capita for 2021')
+  
+```
+
+
 Find the top 5 counties and bottom 5 countries by GDP per capita in 2021.
+
+```{r}
+gdp_2021 |> 
+  arrange(GDP_Per_Capita) |> 
+  slice_head(n = 5)
+```
+```{r}
+gdp_2021 |> 
+  arrange(GDP_Per_Capita) |> 
+  slice_tail(n = 5)
+```
+
 
 Now, return to the full dataset, gdp_df. Pivot the data for 1990 and 2021 (using pivot_wider() function) so that each row corresponds to a country, each column corresponds to a year, and the values in the table give the GDP_Per_Capita amount. Drop any rows that are missing values for either 1990 or 2021. Save the result to a tibble named gdp_pivoted.
 
