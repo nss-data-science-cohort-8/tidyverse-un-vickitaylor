@@ -31,6 +31,11 @@ gdp_df <-
 ```
 
 
+```{r}
+
+```
+
+
 Which years are represented in this dataset? How many observations are there per year? Make a plot to view the number of observations per year.
 
 There are 33 different years from 1990 - 2022.
@@ -126,11 +131,42 @@ gdp_2021 |>
 
 Now, return to the full dataset, gdp_df. Pivot the data for 1990 and 2021 (using pivot_wider() function) so that each row corresponds to a country, each column corresponds to a year, and the values in the table give the GDP_Per_Capita amount. Drop any rows that are missing values for either 1990 or 2021. Save the result to a tibble named gdp_pivoted.
 
+```{r}
+gdp_pivoted <- 
+  gdp_df |> 
+    filter(Year %in% c('2021', '1990')) |>
+    pivot_wider(names_from = Year,
+                values_from = GDP_Per_Capita) |> 
+    drop_na()
+```
+
+
+```{r}
+gdp_pivoted
+```
+
+
+
 Create a new column in gdp_pivoted named Percent_Change. This column should contain the percent change in GDP_Per_Capita from 1990 to 2021. Hint: Percent change is calculated as 100*(New Value - Old Value) / Old Value.
 
+```{r}
+gdp_pivoted <- gdp_pivoted |> 
+  mutate(Percent_Change = ((`2021` - `1990`) / `1990`) *100)
+```
+
+
 How many countries experienced a negative percent change in GDP per capita from 1990 to 2021?
+19 countries/ areas experienced a negative percent change in GDP Per Capita
+
+```{r}
+gdp_pivoted |> 
+  filter(Percent_Change < 0)
+```
+
 
 Which country had the highest % change in GDP per capita? Create a line plot showing these country's GDP per capita for all years for which you have data. Put both line charts on the same plot.
+
+
 
 Read in continents.csv contained in the data folder into a new tibble called continents. We will be using this tibble to add a new column to our dataset.
 
