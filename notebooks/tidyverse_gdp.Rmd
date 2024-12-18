@@ -229,16 +229,33 @@ life_exp <- life_exp |>
   pivot_longer(cols = `1960`:`2022`, 
              names_to = 'Year', 
              values_to = 'Life_Expectancy') |> 
-  rename(Country = `Country Name`)
+  rename(Country = `Country Name`) |> 
+  mutate(Year = as.double(Year))
 ```
 
 
 
 19) What was the first country with a life expectancy to exceed 80?
-
+- Japan in 1996
+```{r}
+life_exp |> 
+  filter(Life_Expectancy > 80) |> 
+  slice_min(Year)
+```
 
 
 20) Merge gdp_df and life_expectancy, keeping all countries and years that appear in both tibbles. Save the result to a new tibble named gdp_le. If you get any errors in doing this, read them carefully and correct them. Look at the first five rows of your new data frame to confirm it merged correctly. Also, check the last five rows to make sure the data is clean and as expected.
+
+```{r}
+gdp_le <-
+  inner_join(gdp_df, life_exp, by = c('Country' = 'Country', 'Year' = 'Year'))
+```
+
+
+```{r}
+slice_tail(gdp_le, n = 10)
+```
+
 
 21) Create a new tibble, named gdp_le_2021 by extracting data for the year 2021 from gdp_le. How many countries have a life expectancy of at least 80 in 2021?
 
