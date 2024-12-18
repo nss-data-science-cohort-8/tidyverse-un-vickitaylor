@@ -259,9 +259,60 @@ slice_tail(gdp_le, n = 10)
 
 21) Create a new tibble, named gdp_le_2021 by extracting data for the year 2021 from gdp_le. How many countries have a life expectancy of at least 80 in 2021?
 
+31 countries had a life expectancy over 80 in 2021
+
+```{r}
+gdp_le_2021 <- gdp_le |> 
+  filter(Year == 2021)
+```
+
+
+```{r}
+gdp_le_2021 |> 
+  filter(Life_Expectancy > 80)
+```
+
+
 22) Find the countries that had the top 3 largest GDP per capita figures for 2021. Create a plot showing the change in life expectancy over time for these three countries. This plot should be faceted so that each country is contained in its own figure.
 
+```{r}
+gdp_le_2021 |> 
+  slice_max(GDP_Per_Capita, n = 3) 
+```
+
+```{r}
+top3_2021 <- gdp_le_2021 |> 
+  slice_max(GDP_Per_Capita, n = 3) |> 
+  select(Country)
+```
+
+
+```{r}
+top3_all <- gdp_le |> 
+  filter(Country %in% top3_2021$Country)
+```
+
+
+```{r}
+ggplot(top3_all, aes(x = Year, y = Life_Expectancy)) +
+  geom_point() +
+  facet_wrap(~Country) + 
+  ggtitle('Life Expenctancy Over the Years for the Top 3 Countries by GDP in 2021') +  
+  labs(y = 'Life Expectancy')
+```
+
+
+
 23) Create a scatter plot of Life Expectancy vs GDP per Capita for the year 2021. What do you notice?
+
+```{r}
+ggplot(gdp_le_2021, aes(x = Life_Expectancy, y = GDP_Per_Capita, color = Continent)) +
+  geom_point()+
+  ggtitle('2021 Life Expenctancy vs GDP per Capita') + 
+  labs(x= 'Life Expectancy', y = 'GDP per Capita')
+```
+
+
 
 24) Find the correlation between Life Expectancy and GDP per Capita for the year 2021. What is the meaning of this number?
 
