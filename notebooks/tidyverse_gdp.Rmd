@@ -3,7 +3,11 @@ title: "tidyverse gdp"
 output: html_notebook
 ---
 
+```{r}
+# install.packages("corrr")
 library(tidyverse)
+library(corrr)
+```
 
 1) Using the read_csv() function, read the GDP dataset into your notebook as a tibble called gdp_df. After reading it in, inspect the first 10 rows and then inspect the last 10 rows.
 
@@ -316,7 +320,53 @@ ggplot(gdp_le_2021, aes(x = Life_Expectancy, y = GDP_Per_Capita, color = Contine
 
 24) Find the correlation between Life Expectancy and GDP per Capita for the year 2021. What is the meaning of this number?
 
+- correlation is .745 which indicates a strong postive relationship between life expectancy and gpd per captia
+
+```{r}
+gdp_le_2021 |> 
+  select(Life_Expectancy, GDP_Per_Capita) |> 
+  correlate()
+```
+
+
+
 25) Add a column to gdp_le_2021 and calculate the logarithm of GDP per capita. Find the correlation between the log of GDP per capita and life expectancy. How does this compare to the calculation in the previous part? Look at a scatter plot to see if the result of this calculation makes sense.
+
+- correlation increased using the log gpd value. 
+
+
+```{r}
+gdp_le_2021 <- gdp_le_2021 |> 
+  mutate(log_gdp = log(GDP_Per_Capita))
+```
+
+```{r}
+gdp_le_2021 |> 
+  select(Life_Expectancy, log_gdp) |> 
+  correlate()
+```
+
+```{r}
+ggplot(gdp_le_2021, aes(x = Life_Expectancy, y = log_gdp, color = Continent)) +
+  geom_point()+
+  ggtitle('2021 Life Expenctancy vs log GDP per Capita') + 
+  labs(x= 'Life Expectancy', y = 'Log GDP per Capita')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
