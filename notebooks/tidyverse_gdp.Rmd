@@ -191,19 +191,52 @@ unique_countries <- gdp_df |>
 ```{r}
 ggplot(unique_countries, aes(x = Continent, y = UniqueCountries)) +
   geom_col() + 
-  ggtitle(('Number of Countries by Continent'))
+  ggtitle('Number of Countries by Continent')
 ```
 
 
 16) Create a boxplot showing GDP per capita in 2021 split out by continent. What do you notice?
+```{r}
+gdp_df |> 
+  filter(Year == 2021) |> 
+  ggplot(aes(x = Continent, y = GDP_Per_Capita)) + 
+  geom_boxplot() + 
+  ggtitle('2021 GDP by Continent') + 
+  labs(y = 'GDP Per Capita')
+
+```
+
+
 
 17) Read life_expectancy.csv into a tibble named life_expectancy. Do not modify the csv file in order to read this data in.
 
-life_exp <-read_csv("../data/life_expectancy.csv")
+```{r}
+life_exp <-read_csv("../data/life_expectancy.csv",
+                    skip = 3)
+```
+
 
 18) Drop the Country Code, Indicator Name, and Indicator Code columns. Then use pivot_longer to convert your data from wide to long. That is, instead of having one row per country and multiple colums per year, we want to have multiple rows per country and a single column for year. After melting, rename the columns to Country, Year, and Life_Expectancy.
 
+```{r}
+life_exp <-
+  select(life_exp, -c(`Country Code`, `Indicator Name`, `Indicator Code`, `2023`, `...69`))
+```
+
+
+```{r}
+life_exp <- life_exp |> 
+  pivot_longer(cols = `1960`:`2022`, 
+             names_to = 'Year', 
+             values_to = 'Life_Expectancy') |> 
+  rename(Country = `Country Name`)
+```
+
+
+
 19) What was the first country with a life expectancy to exceed 80?
+
+
 
 20) Merge gdp_df and life_expectancy, keeping all countries and years that appear in both tibbles. Save the result to a new tibble named gdp_le. If you get any errors in doing this, read them carefully and correct them. Look at the first five rows of your new data frame to confirm it merged correctly. Also, check the last five rows to make sure the data is clean and as expected.
 
